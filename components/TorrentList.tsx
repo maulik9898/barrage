@@ -58,12 +58,6 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 
 const columnHelper = createColumnHelper<NormalizedTorrent>();
 const columns = [
-  columnHelper.accessor("downloadSpeed", {
-    id: "downloadSpeed",
-    enableSorting: true,
-    enableColumnFilter: false,
-    header: "Download Speed",
-  }),
   columnHelper.accessor("name", {
     id: "name",
     enableSorting: true,
@@ -83,6 +77,18 @@ const columns = [
     enableColumnFilter: false,
     header: "Progress",
   }),
+  columnHelper.accessor("downloadSpeed", {
+    id: "downloadSpeed",
+    enableSorting: true,
+    enableColumnFilter: false,
+    header: "Download Speed",
+  }),
+  columnHelper.accessor("uploadSpeed", {
+    id: "uploadSpeed",
+    enableSorting: true,
+    enableColumnFilter: false,
+    header: "Upload Speed",
+  }),
   columnHelper.accessor("queuePosition", {
     id: "queuePosition",
     enableSorting: true,
@@ -100,13 +106,17 @@ const columns = [
     enableColumnFilter: false,
     header: "Total Size",
   }),
+  columnHelper.accessor("dateAdded", {
+    id: "dateAdded",
+    enableSorting: true,
+    enableColumnFilter: false,
+    header: "Date Added",
+  }),
 ];
 
 const TorrentList = () => {
-  const router = useRouter();
   const setLabels = useTorrentStore((state) => state.setLables);
   const { setState, setStats } = useTorrentStore();
-  const [scroll, scrollTo] = useWindowScroll();
   const {
     filter,
     setFilter,
