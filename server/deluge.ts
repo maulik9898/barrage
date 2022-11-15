@@ -6,4 +6,3 @@ const delugeClient = new Deluge({
 });
 
 export default delugeClient;
-``
