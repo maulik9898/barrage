@@ -245,14 +245,8 @@ export const deluge = router({
     }),
 
   getHostInfo: protectedProcedure.mutation(async () => {
-    let id = delugeClient.getHostId();
-    if (!id) {
-      await delugeClient.connect();
-      id = delugeClient.getHostId();
-    }
-    const status = await delugeClient.getHostStatus(id!);
-    const res = status.result.pop() as string;
-    return res;
+    const res = await delugeClient.getVersion();
+    return res.result;
   }),
 
   setTorrentOption: protectedProcedure
@@ -278,10 +272,14 @@ export const deluge = router({
       return res;
     }),
 
-  setGlobalConfig: protectedProcedure.input(z.object({
-    data: delugeSettingsSchema.partial()
-  })).mutation(async ({input}) => {
-    const res = await delugeClient.setConfig(input.data);
-    return res;
-  })
+  setGlobalConfig: protectedProcedure
+    .input(
+      z.object({
+        data: delugeSettingsSchema.partial(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const res = await delugeClient.setConfig(input.data);
+      return res;
+    }),
 });

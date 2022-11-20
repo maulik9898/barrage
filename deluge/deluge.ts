@@ -214,7 +214,13 @@ export class Deluge {
    * returns the version ex - `2.0.3-2-201906121747-ubuntu18.04.1`
    */
   async getVersion(): Promise<StringStatus> {
-    const req = await this.request<StringStatus>("daemon.get_version");
+    let req;
+    try {
+      req = await this.request<StringStatus>("daemon.get_version");
+    } catch (error) {
+      req = await this.request<StringStatus>("daemon.info");
+    }
+
     return req.body;
   }
 
