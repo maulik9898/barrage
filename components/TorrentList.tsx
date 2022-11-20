@@ -5,11 +5,13 @@ import {
   Button,
   Center,
   Flex,
+  Grid,
   Group,
   Pagination,
   Paper,
   Select,
   Text,
+  Title,
   Transition,
 } from "@mantine/core";
 import {
@@ -38,7 +40,7 @@ import useTorrentStore from "../stores/useTorrentStore";
 import { trpc } from "../utils/trpc";
 import Torrent from "./Torrent";
 import { rankItem } from "@tanstack/match-sorter-utils";
-import { IconArrowUp } from "@tabler/icons";
+import { IconArrowUp, IconZzz } from "@tabler/icons";
 import { useMediaQuery, useWindowScroll } from "@mantine/hooks";
 import ListSkeleton from "./ListSkeleton";
 
@@ -184,6 +186,25 @@ const TorrentList = () => {
 
   if (torrents.isLoading) {
     return <ListSkeleton />;
+  }
+
+  if (torrents.data?.torrents.length === 0) {
+    return (
+      <Grid m={"auto"} columns={1} justify={"center"} align={"center"}>
+        <Grid.Col>
+          <Center>
+            <IconZzz color="#909296"  size={80} />
+          </Center>
+        </Grid.Col>
+        <Grid.Col>
+          <Center>
+            <Title order={1} color={"dimmed"}>
+              No Torrents
+            </Title>
+          </Center>
+        </Grid.Col>
+      </Grid>
+    );
   }
 
   return (
