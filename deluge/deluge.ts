@@ -353,24 +353,7 @@ export class Deluge {
       path = torrent;
     }
 
-    const options: AddTorrentOptions = {
-      file_priorities: [],
-      add_paused: false,
-      compact_allocation: false,
-      max_connections: -1,
-      max_download_speed: -1,
-      max_upload_slots: -1,
-      max_upload_speed: -1,
-      prioritize_first_last_pieces: false,
-      // not passing path by default uses default
-      // download_location: '/root/Downloads',
-      // move_completed_path: '/root/Downloads',
-
-      move_completed: false,
-      seed_mode: false,
-      sequential_download: false,
-      super_seeding: false,
-      pre_allocate_storage: false,
+    const options = {
       ...config,
     };
     const res = await this.request<AddTorrentResponse>("web.add_torrents", [

@@ -282,4 +282,78 @@ export const deluge = router({
       const res = await delugeClient.setConfig(input.data);
       return res;
     }),
+
+  downloadURL: protectedProcedure
+    .input(
+      z.object({
+        url: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const res = await delugeClient.downloadFromUrl(input.url);
+      return res;
+    }),
+    getTorrentInfo: protectedProcedure
+    .input(
+      z.object({
+        path: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const res = await delugeClient.getTorrentInfo(input.path);
+      return res;
+    }),
+
+    addTorrent: protectedProcedure
+    .input(
+      z.object({
+        path: z.string(),
+        config: z.object({
+          add_paused: z.boolean(),
+          compact_allocation: z.boolean().nullish(),
+          download_location: z.string(),
+          max_connections_per_torrent: z.number().min(-1),
+          max_download_speed_per_torrent: z.number().min(-1),
+          max_upload_slots_per_torrent: z.number().min(-1),
+          max_upload_speed_per_torrent: z.number().min(-1),
+          move_completed: z.boolean(),
+          move_completed_path: z.string(),
+          prioritize_first_last_pieces: z.boolean(),
+          pre_allocate_storage: z.boolean().nullish(),
+          sequential_download: z.boolean().nullish(),
+          super_seeding: z.boolean().nullish(),
+        }),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const config: Partial<AddTorrentOptions> = {
+        file_priorities: [],
+        max_connections: input.config.max_connections_per_torrent,
+        add_paused: input.config.add_paused,
+        compact_allocation: input.config.compact_allocation ?? undefined,
+        download_location: input.config.download_location,
+        max_download_speed: input.config.max_download_speed_per_torrent,
+        max_upload_slots: input.config.max_upload_slots_per_torrent,
+        max_upload_speed: input.config.max_upload_speed_per_torrent,
+        move_completed: input.config.move_completed,
+        move_completed_path: input.config.move_completed_path,
+        prioritize_first_last_pieces: input.config.prioritize_first_last_pieces,
+        pre_allocate_storage: input.config.pre_allocate_storage ?? undefined,
+        super_seeding: input.config.super_seeding ?? undefined,
+        sequential_download: input.config.sequential_download ?? undefined,
+      };
+      console.log(config);
+
+      const notNullconfig = removeNullUndefined(
+        config
+      ) as Partial<AddTorrentOptions>;
+      console.log(notNullconfig);
+
+      const added = await delugeClient.addTorrentMagnet(
+        input.path,
+        notNullconfig
+      );
+      return added;
+    }),
+
 });
