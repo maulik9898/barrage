@@ -1,3 +1,5 @@
+[![DOCKER-BUILD](https://github.com/maulik9898/barrage/actions/workflows/docker-image.yml/badge.svg?branch=main)](https://github.com/maulik9898/barrage/actions/workflows/docker-image.yml)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
