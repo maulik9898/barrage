@@ -23,8 +23,8 @@ import AddTorrentModal from "./AddTorrentModal";
 const AddTorrentButton = () => {
   const [openedMagnet, setOpenedMagnet] = useState(false);
   const [openedURL, setOpenedURL] = useState(false);
-
   const v2 = useTorrentStore((s) => s.isv2);
+
   const form = useForm<ConfigValues>({
     initialValues: {
       add_paused: false,
@@ -141,7 +141,7 @@ const AddTorrentButton = () => {
             </Text>
           )}
           <Space h={"md"} />
-          <AddTorrentModal v2={v2} form={form} />
+          <AddTorrentModal form={form} />
           <Space h={"md"} />
           <Group position="right">
             <Button
@@ -193,7 +193,7 @@ const AddTorrentButton = () => {
             </Text>
           )}
           <Space h={"md"} />
-          <AddTorrentModal v2={v2} form={form} />
+          <AddTorrentModal form={form} />
           <Space h={"md"} />
           <Group position="right">
             <Button

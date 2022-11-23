@@ -62,19 +62,18 @@ const GlobalConnection = () => {
           </Button>
         </Group>
       </Modal>
-
-      <Menu
-        styles={(theme) => ({
-          item: {
-            fontSize: theme.fontSizes.xs,
-          },
-        })}
-        withArrow
-        withinPortal
-        shadow="md"
-      >
-        <Menu.Target>
-          <MediaQuery smallerThan={"sm"} styles={{ display: "none" }}>
+      <MediaQuery smallerThan={"sm"} styles={{ display: "none" }}>
+        <Menu
+          styles={(theme) => ({
+            item: {
+              fontSize: theme.fontSizes.xs,
+            },
+          })}
+          withArrow
+          withinPortal
+          shadow="md"
+        >
+          <Menu.Target>
             <Tooltip
               withinPortal
               label="Global connections"
@@ -106,25 +105,25 @@ const GlobalConnection = () => {
                 }`}
               </Button>
             </Tooltip>
-          </MediaQuery>
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Menu.Label>Limit Connections</Menu.Label>
-          <Menu.Item onClick={() => handleItem(50)}>50</Menu.Item>
-          <Menu.Item onClick={() => handleItem(100)}>100</Menu.Item>
-          <Menu.Item onClick={() => handleItem(200)}>200</Menu.Item>
-          <Menu.Item onClick={() => handleItem(500)}>500</Menu.Item>
-          <Menu.Item onClick={() => handleItem(-1)}>Unlimited</Menu.Item>
-          <Menu.Divider />
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Label>Limit Connections</Menu.Label>
+            <Menu.Item onClick={() => handleItem(50)}>50</Menu.Item>
+            <Menu.Item onClick={() => handleItem(100)}>100</Menu.Item>
+            <Menu.Item onClick={() => handleItem(200)}>200</Menu.Item>
+            <Menu.Item onClick={() => handleItem(500)}>500</Menu.Item>
+            <Menu.Item onClick={() => handleItem(-1)}>Unlimited</Menu.Item>
+            <Menu.Divider />
 
-          <Menu.Item
-            onClick={() => setOpened(true)}
-            icon={<IconArrowsLeftRight size={14} />}
-          >
-            Other
-          </Menu.Item>
-        </Menu.Dropdown>
-      </Menu>
+            <Menu.Item
+              onClick={() => setOpened(true)}
+              icon={<IconArrowsLeftRight size={14} />}
+            >
+              Other
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+      </MediaQuery>
     </>
   );
 };

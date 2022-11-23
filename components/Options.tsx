@@ -8,7 +8,8 @@ import {
   Switch,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import React, { useEffect } from "react";
+import { useTimeout } from "@mantine/hooks";
+import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { TorrentOptions } from "../deluge";
 import { trpc } from "../utils/trpc";
@@ -24,15 +25,18 @@ const schema = z.object({
 const Options = ({ id }: { id: string }) => {
   const setOption = trpc.deluge.setTorrentOption.useMutation({
     onSuccess() {
-      options.refetch();
+      start();
     },
   });
 
+  const { start, clear } = useTimeout(() => options.refetch(), 800);
+  const [loading, setLoading] = useState(false);
   const options = trpc.deluge.getTorrentOption.useQuery(
     { id },
     {
       enabled: false,
       onSuccess(data) {
+        setLoading(false);
         form.setValues({
           auto_managed: data.result.is_auto_managed,
           max_connections: data.result.max_connections,
@@ -111,10 +115,12 @@ const Options = ({ id }: { id: string }) => {
       />
       <Group position="right">
         <Button
+          loading={loading}
           disabled={!form.isValid()}
           mt={"sm"}
           type="submit"
           onClick={() => {
+            setLoading(true);
             setOption.mutate({
               id: id,
               data: form.values,

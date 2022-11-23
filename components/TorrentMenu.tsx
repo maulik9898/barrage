@@ -1,4 +1,5 @@
 import { ActionIcon, Menu, Modal } from "@mantine/core";
+import { openContextModal } from "@mantine/modals";
 import {
   IconChevronDown,
   IconChevronRight,
@@ -8,20 +9,24 @@ import {
   IconDatabaseExport,
   IconDeviceSdCard,
   IconDotsVertical,
+  IconFileArrowRight,
   IconListNumbers,
   IconPlayerPause,
   IconPlayerPlay,
   IconSettings,
+  IconTag,
   IconTrash,
   IconZoomCheck,
 } from "@tabler/icons";
 import { memo, useEffect, useState } from "react";
 import { trpc } from "../utils/trpc";
 import Label from "./Label";
+import MoveStorage from "./MoveStorage";
 import Options from "./Options";
 
 const TorrentMenu = ({ id, refetch }: { id: string; refetch: () => void }) => {
   const [opened, setOpened] = useState(false);
+  const [openedMove, setOpenedMove] = useState(false);
   const top = trpc.deluge.queueTop.useMutation({
     onSuccess() {
       refetch();
@@ -72,6 +77,14 @@ const TorrentMenu = ({ id, refetch }: { id: string; refetch: () => void }) => {
       >
         <Options id={id} />
       </Modal>
+      <Modal
+        centered
+        opened={openedMove}
+        onClose={() => setOpenedMove(false)}
+        title="Move Storage"
+      >
+        <MoveStorage id={id} close={() => setOpenedMove(false)} />
+      </Modal>
       <Menu withinPortal withArrow position="bottom-end" shadow="md">
         <Menu.Target>
           <ActionIcon size={"lg"} variant="default">
@@ -93,7 +106,22 @@ const TorrentMenu = ({ id, refetch }: { id: string; refetch: () => void }) => {
             Resume
           </Menu.Item>
           <Menu.Divider />
-          <Label id={id} refetch={refetch} />
+          <Menu.Item
+            onClick={() => {
+              openContextModal({
+                centered: true,
+                modal: "labelModel",
+                title: "Set Label",
+                innerProps: {
+                  id: id,
+                  refetch: refetch,
+                },
+              });
+            }}
+            icon={<IconTag size={14} />}
+          >
+            Label
+          </Menu.Item>
           <Menu.Divider />
           <Menu.Item
             onClick={() => {
@@ -158,6 +186,15 @@ const TorrentMenu = ({ id, refetch }: { id: string; refetch: () => void }) => {
             icon={<IconZoomCheck size={14} />}
           >
             Force Recheck
+          </Menu.Item>
+          <Menu.Divider />
+          <Menu.Item
+            onClick={() => {
+              setOpenedMove(true);
+            }}
+            icon={<IconFileArrowRight size={14} />}
+          >
+            Move Storage
           </Menu.Item>
           <Menu.Divider />
           <Menu.Label>Delete Torrent</Menu.Label>

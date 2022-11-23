@@ -449,6 +449,17 @@ export class Deluge {
     return req.body;
   }
 
+  async moveStorage(
+    torrentId: string,
+    location: string
+  ): Promise<BooleanStatus> {
+    const req = await this.request<DefaultResponse>("core.move_storage", [
+      [torrentId],
+      location,
+    ]);
+    return req.body;
+  }
+
   async changePassword(password: string): Promise<BooleanStatus> {
     const res = await this.request<BooleanStatus>("auth.change_password", [
       this.config.password,
@@ -557,6 +568,24 @@ export class Deluge {
   async getTorrent(id: string): Promise<NormalizedTorrent> {
     const torrentResponse = await this.getTorrentStatus(id);
     return this._normalizeTorrentData(id, torrentResponse.result);
+  }
+
+  async getTorrentStatusMin(
+    torrentId: string,
+    additionalFields: string[]
+  ): Promise<Partial<Torrent>> {
+    console.log(additionalFields);
+    const req = await this.request<TorrentStatus>("web.get_torrent_status", [
+      torrentId,
+      additionalFields,
+    ]);
+
+    console.log(req.body);
+    if (!req.body.result || !Object.keys(req.body.result).length) {
+      throw new Error("Torrent not found");
+    }
+
+    return req.body.result as Partial<Torrent>;
   }
 
   /**
@@ -832,9 +861,8 @@ export class Deluge {
     const err =
       (res.body as { error: unknown })?.error ??
       (typeof res.body === "string" && res.body);
-
     if (err) {
-      throw new Error((err as Error).message || (err as string));
+      throw new Error((err as any).message || (err as string));
     }
 
     return res;

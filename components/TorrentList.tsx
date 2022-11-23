@@ -179,7 +179,6 @@ const TorrentList = () => {
 
   useEffect(() => {
     if (AllColums) {
-      console.log("cols change");
       setColumns(AllColums.filter((e) => e.getCanSort));
     }
   }, [sorting, filter]);
@@ -193,7 +192,7 @@ const TorrentList = () => {
       <Grid m={"auto"} columns={1} justify={"center"} align={"center"}>
         <Grid.Col>
           <Center>
-            <IconZzz color="#909296"  size={80} />
+            <IconZzz color="#909296" size={80} />
           </Center>
         </Grid.Col>
         <Grid.Col>

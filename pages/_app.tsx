@@ -6,7 +6,8 @@ import { trpc } from "../utils/trpc";
 import { RouterTransition } from "../components/RouterTransition";
 import { SessionProvider } from "next-auth/react";
 import { ModalsProvider } from "@mantine/modals";
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Label from "../components/Label";
 
 export function App({ Component, pageProps }: AppProps) {
   return (
@@ -27,7 +28,7 @@ export function App({ Component, pageProps }: AppProps) {
             colorScheme: "dark",
           }}
         >
-          <ModalsProvider>
+          <ModalsProvider modals={{ labelModel: Label }}>
             <RouterTransition />
             <Component {...pageProps} />
             <ReactQueryDevtools initialIsOpen />

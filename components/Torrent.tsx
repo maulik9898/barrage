@@ -11,18 +11,16 @@ import {
   Title,
   useMantineTheme,
 } from "@mantine/core";
-import { useHover, useMediaQuery } from "@mantine/hooks";
+import { useMediaQuery } from "@mantine/hooks";
 import { IconTriangle, IconTriangleInverted } from "@tabler/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { NormalizedTorrent, TorrentState } from "../deluge/types";
 import { forHumansSeconds, humanFileSize } from "../utils/helper";
 import { trpc } from "../utils/trpc";
 import BadgeToolTip from "./BadgeToolTip";
 import TorrentButtons from "./TorrentButtons";
 import MemoizedTorrentMenu from "./TorrentMenu";
-import TorrentMenu from "./TorrentMenu";
 
 const getStatusTextColor = (
   state: TorrentState
@@ -35,7 +33,7 @@ const getStatusTextColor = (
     case TorrentState.paused:
       return "yellow";
     case TorrentState.seeding:
-      return "teal"
+      return "teal";
     case TorrentState.error:
     case TorrentState.unknown:
     case TorrentState.warning:
@@ -52,22 +50,8 @@ const Torrent = ({
   refetch: () => void;
 }) => {
   const theme = useMantineTheme();
-  const router = useRouter();
   const statusColor = getStatusTextColor(torrent.state);
-  const { hovered, ref } = useHover();
-  const prefetch = trpc.useContext();
   const largeScreen = useMediaQuery("(min-width: 800px)");
-
-  useEffect(() => {
-    if (hovered) {
-      prefetch.deluge.getFiles.prefetch(
-        { id: torrent.id },
-        {
-          staleTime: 5000,
-        }
-      );
-    }
-  }, [hovered, torrent.id]);
 
   return (
     <Card
@@ -94,7 +78,7 @@ const Torrent = ({
           direction={"column"}
         >
           <Flex align={"center"} justify={"space-between"} gap={"xs"}>
-            <div ref={ref}>
+            <div>
               <Center>
                 <Title
                   color={"dimmed"}
@@ -106,7 +90,7 @@ const Torrent = ({
                   component={Link}
                   lineClamp={1}
                   weight={700}
-                  ml={largeScreen ? 'xs' : 4}
+                  ml={largeScreen ? "xs" : 4}
                   as={`/home/${torrent.id}`}
                   replace={true}
                   href={{

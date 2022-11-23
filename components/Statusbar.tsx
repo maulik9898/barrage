@@ -21,7 +21,7 @@ import {
 import React from "react";
 import useTorrentStore from "../stores/useTorrentStore";
 import { humanFileSize } from "../utils/helper";
-import GlobalConnection from "./GLobalConnection";
+import GlobalConnection from "./GlobalConnection";
 import GlobalDown from "./GlobalDown";
 import GlobalUp from "./GlobalUp";
 

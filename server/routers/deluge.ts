@@ -174,7 +174,15 @@ export const deluge = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const res = await delugeClient.setTorrentLabel(input.id, input.label);
+      let res;
+      try {
+        res = await delugeClient.setTorrentLabel(input.id, input.label);
+      } catch (error) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: (error as any).message,
+        });
+      }
       return res;
     }),
 
@@ -185,7 +193,16 @@ export const deluge = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const res = await delugeClient.addLabel(input.label);
+      let res;
+      try {
+        res = await delugeClient.addLabel(input.label);
+      } catch (error) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: (error as any).message,
+        });
+      }
+
       return res;
     }),
 
@@ -293,7 +310,7 @@ export const deluge = router({
       const res = await delugeClient.downloadFromUrl(input.url);
       return res;
     }),
-    getTorrentInfo: protectedProcedure
+  getTorrentInfo: protectedProcedure
     .input(
       z.object({
         path: z.string(),
@@ -304,7 +321,7 @@ export const deluge = router({
       return res;
     }),
 
-    addTorrent: protectedProcedure
+  addTorrent: protectedProcedure
     .input(
       z.object({
         path: z.string(),
@@ -356,4 +373,30 @@ export const deluge = router({
       return added;
     }),
 
+  moveStorage: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        location: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const res = await delugeClient.moveStorage(input.id, input.location);
+      return res;
+    }),
+
+  getTorrentInfoMin: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        options: z.array(z.string()),
+      })
+    )
+    .query(async ({ input }) => {
+      const res = await delugeClient.getTorrentStatusMin(
+        input.id,
+        input.options
+      );
+      return res;
+    }),
 });

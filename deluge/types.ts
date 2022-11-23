@@ -141,6 +141,7 @@ export interface Stats {
 
 export interface Torrent {
   [key: string]: any;
+  super_seeding?: boolean;
   max_download_speed: number;
   upload_payload_rate: number;
   download_payload_rate: number;
@@ -171,7 +172,7 @@ export interface Torrent {
   label?: string;
   max_connections: number,
   max_upload_slots: number,
-  stop_at_ratio: number,
+  stop_at_ratio: boolean,
   stop_ratio: number,
   remove_at_ratio: boolean,
   prioritize_first_last: boolean,
