@@ -7,7 +7,6 @@ on:
   pull_request:
     branches:
       - 'main'
-      - 'dev'
 # permissions are needed if pushing to ghcr.io
 permissions: 
   packages: write
@@ -41,6 +40,7 @@ jobs:
           # Docker tags based on the following events/attributes
           tags: |
             type=schedule
+            type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
             type=ref,event=pr
             type=semver,pattern={{version}}
