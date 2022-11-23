@@ -16,7 +16,7 @@ export const nextAuthOptions: NextAuthOptions = {
           const user = {
             id: Buffer.from(credentials.password).toString("base64"),
           };
-          console.log("login")
+          console.log("login");
           return user;
         }
         return null;
@@ -25,23 +25,27 @@ export const nextAuthOptions: NextAuthOptions = {
   ],
   callbacks: {
     jwt: async ({ token, user }) => {
-        if (user) {
-          token.id = user.id;
-          token.email = user.email;
-        }
-  
-        return token;``
-      },
-      session: async ({ session, token }) => {
-        if (token && session.user) {
-          session.user.id = token.id as string;
-        }
-  
-        return session;
-      },
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+      }
+
+      return token;
+      ``;
+    },
+    session: async ({ session, token }) => {
+      if (token && session.user) {
+        session.user.id = token.id as string;
+      }
+
+      return session;
+    },
   },
 
   pages: {
     signIn: "/",
+  },
+  session: {
+    maxAge:  24 * 60 * 60,
   },
 };
