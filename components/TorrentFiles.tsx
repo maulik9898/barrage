@@ -92,7 +92,7 @@ const TorrentFiles = ({ id }: { id: string }) => {
   }
 
   return (
-    <Accordion m={"sm"} radius={0} variant="contained">
+    <Accordion mt={0} m={"sm"} radius={0} variant="contained">
       {getFiles}
     </Accordion>
   );
