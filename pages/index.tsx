@@ -1,15 +1,9 @@
-import {
-  Button,
-  Card,
-  Flex,
-  Group,
-  PasswordInput,
-} from "@mantine/core";
+import { Button, Card, Flex, Group, PasswordInput } from "@mantine/core";
 import { unstable_getServerSession } from "next-auth";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { nextAuthOptions } from "../utils/nextAuthOption";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -20,7 +14,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   );
 
   if (session) {
-
     return {
       redirect: {
         destination: "/home",
@@ -40,14 +33,14 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { data: session, status } = useSession();
-  const [loading , setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   if (status === "authenticated") {
     router.push("/home");
   }
 
   const handleSignIn = async () => {
-    setLoading(true)
+    setLoading(true);
     const d = await signIn("credentials", {
       password: password,
       redirect: false,
@@ -58,7 +51,7 @@ const Login = () => {
     if (d?.error) {
       setError("Invalid Password");
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   return (
@@ -67,27 +60,38 @@ const Login = () => {
         withBorder
         w={{ base: 300, xs: 500, sm: 700, md: 800, lg: 800, xl: 800 }}
       >
-        <PasswordInput
-          size="md"
-          label="Enter Password"
-          value={password}
-          error={error}
-          mb={"lg"}
-          styles={(theme) => ({
-            label: {
-              marginBottom: theme.spacing.sm,
-            },
-          })}
-          onChange={(e) => {
-            setError("");
-            setPassword(e.currentTarget.value);
-          }}
-        />
-        <Group grow>
-          <Button loading={loading}  loaderPosition={'right'} size="md" mt={"xl"} onClick={() => handleSignIn()}>
-            Login
-          </Button>
-        </Group>
+        <form onSubmit={(e) => {
+          e.preventDefault()
+          handleSignIn()
+        }}>
+          <PasswordInput
+            size="md"
+            label="Enter Password"
+            value={password}
+            error={error}
+            mb={"lg"}
+            styles={(theme) => ({
+              label: {
+                marginBottom: theme.spacing.sm,
+              },
+            })}
+            onChange={(e) => {
+              setError("");
+              setPassword(e.currentTarget.value);
+            }}
+          />
+          <Group grow>
+            <Button
+              type="submit"
+              loading={loading}
+              loaderPosition={"right"}
+              size="md"
+              mt={"xl"}
+            >
+              Login
+            </Button>
+          </Group>
+        </form>
       </Card>
     </Flex>
   );
