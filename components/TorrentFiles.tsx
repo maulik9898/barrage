@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Accordion, Card, Flex, Skeleton } from "@mantine/core";
+import { Accordion, Alert, Card, Flex, Skeleton } from "@mantine/core";
 import { useTimeout } from "@mantine/hooks";
+import { IconAlertCircle } from "@tabler/icons";
 import { useEffect, useMemo, useState } from "react";
 import { getFileMap } from "../utils/helper";
 import { trpc } from "../utils/trpc";
@@ -92,9 +93,22 @@ const TorrentFiles = ({ id }: { id: string }) => {
   }
 
   return (
-    <Accordion mt={0} m={"sm"} radius={0} variant="contained">
-      {getFiles}
-    </Accordion>
+    <>
+      <Alert
+        m={"sm"}
+        mt={0}
+        icon={<IconAlertCircle size={16} />}
+        title="Set priority using Dropdown menu"
+        variant="light"
+      >
+        0 - Do not download &nbsp; &nbsp; &nbsp;
+        <br /> 1 - Low &nbsp; &nbsp; &nbsp; 4 - Normal &nbsp; &nbsp; &nbsp; 5 -
+        High &nbsp; &nbsp; &nbsp; <br /> 7 - Highest priority
+      </Alert>
+      <Accordion mt={0} m={"sm"} radius={0} variant="contained">
+        {getFiles}
+      </Accordion>
+    </>
   );
 };
 
