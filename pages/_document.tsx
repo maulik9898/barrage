@@ -11,6 +11,8 @@ export default class _Document extends Document {
     return (
       <Html>
         <Head />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/logo.png" />
         <body>
           <Main/>
           <NextScript />
